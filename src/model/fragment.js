@@ -16,7 +16,6 @@ const {
 
 class Fragment {
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
-    // TODO
     if (!ownerId) throw Error('No OwnerID');
     if (!type) throw Error('No Type');
 
@@ -54,7 +53,6 @@ class Fragment {
    * @returns Promise<Array<Fragment>>
    */
   static async byUser(ownerId, expand = false) {
-    // TODO
     return listFragments(ownerId, expand);
   }
 
@@ -65,7 +63,6 @@ class Fragment {
    * @returns Promise<Fragment>
    */
   static async byId(ownerId, id) {
-    // TODO
     const result = await readFragment(ownerId, id);
     if (result == undefined) throw Error(id + ' returns undefined');
     return result;
@@ -78,7 +75,6 @@ class Fragment {
    * @returns Promise
    */
   static delete(ownerId, id) {
-    // TODO
     return deleteFragment(ownerId, id);
   }
 
@@ -87,7 +83,6 @@ class Fragment {
    * @returns Promise
    */
   save() {
-    // TODO
     this.updated = new Date();
     return writeFragment(this);
   }
@@ -97,7 +92,6 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   getData() {
-    // TODO
     return readFragmentData(this.ownerId, this.id);
   }
 
@@ -107,11 +101,11 @@ class Fragment {
    * @returns Promise
    */
   async setData(data) {
-    // TODO
     if (!Buffer.isBuffer(data)) {
       throw Error(data + ' is not a buffer');
     }
-    this.size = this.size + 1;
+    //this is incorrect
+    this.size = data.length;
     this.updated = new Date();
     return writeFragmentData(this.ownerId, this.id, data);
   }
@@ -131,7 +125,6 @@ class Fragment {
    * @returns {boolean} true if fragment's type is text/*
    */
   get isText() {
-    // TODO
     let retVal = false;
     if (this.type.substring(0, 4) == 'text') {
       retVal = true;
@@ -144,7 +137,6 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    // TODO
     return ['text/plain'];
   }
 
@@ -154,7 +146,6 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    // TODO
     return value.substring(0, 4) == 'text';
   }
 }

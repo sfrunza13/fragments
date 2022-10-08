@@ -14,6 +14,9 @@ router.get('/fragments', require('./get'));
 
 // Other routes will go here later on...
 
+// Define our second get, which will be: GET /v1/fragements/:id
+router.get('/fragments/:id', require('./get'));
+
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>
   express.raw({

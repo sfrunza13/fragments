@@ -28,12 +28,47 @@ describe('POST /v1/fragments', () => {
       .set('Content-Type', 'text/plain')
       .auth('user1@email.com', 'password1');
 
-    console.log(res);
-
-    // .expect('Content-Type', /text/);
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
+    expect(res.body.Fragment).toHaveProperty('ownerId');
+    expect(res.body.Fragment).toHaveProperty('id');
+    expect(res.body.Fragment.type).toBe('text/plain');
+    expect(res.body.Fragment.size).toBe(13);
+    expect(res.body.Fragment).toHaveProperty('created');
+    expect(res.body.Fragment).toHaveProperty('updated');
   });
 
-  // TODO: we'll need to add tests to check the contents of the fragments array later
+  test('authenticated users post and get a response of some sort but buffer', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send(Buffer.from([1, 2, 3]))
+      .set('Content-Type', 'text/plain')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.Fragment).toHaveProperty('ownerId');
+    expect(res.body.Fragment).toHaveProperty('id');
+    expect(res.body.Fragment.type).toBe('text/plain');
+    expect(res.body.Fragment.size).toBe(3);
+    expect(res.body.Fragment).toHaveProperty('created');
+    expect(res.body.Fragment).toHaveProperty('updated');
+  });
+
+  test('authenticated users post and get a response of some sort but nothing', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send()
+      .set('Content-Type', 'text/plain')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.Fragment).toHaveProperty('ownerId');
+    expect(res.body.Fragment).toHaveProperty('id');
+    expect(res.body.Fragment.type).toBe('text/plain');
+    expect(res.body.Fragment.size).toBe(0);
+    expect(res.body.Fragment).toHaveProperty('created');
+    expect(res.body.Fragment).toHaveProperty('updated');
+  });
 });
