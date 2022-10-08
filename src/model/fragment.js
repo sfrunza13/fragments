@@ -155,8 +155,7 @@ class Fragment {
    */
   static isSupportedType(value) {
     // TODO
-    const { type } = contentType.parse(value);
-    return type == 'text/plain';
+    return value.substring(0, 4) == 'text';
   }
 }
 

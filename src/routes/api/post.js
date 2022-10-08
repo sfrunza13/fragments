@@ -1,19 +1,21 @@
 const { createSuccessResponse } = require('../../response');
 
+const successResponse = createSuccessResponse({
+  message: 'Yoopie!',
+});
+// const Fragment = require("../../model/fragment")
 /**
- * Get a list of fragments for the current user
+ * Write fragment from request body including id, created, type, size, ownerID
+ * We must create a new Fragment MetaData and post it
+ * setData and save (I don't know if order matters, we have email and id here)
  */
 module.exports = (req, res) => {
-  const successResponse = createSuccessResponse({
-    message: 'Yoopie!',
-    payload: req.body,
-  });
+  // const fragment = new Fragment();
+
+  // fragment.
 
   // TODO: this is just a placeholder to get something working...
-  res.status(201);
-  res.setHeader('Location', process.env.API_URL);
-  res.json(...successResponse);
-  res.end();
+  res.status(201).setHeader('Location', process.env.API_URL).json(successResponse);
 };
 
 // const stat = createSuccessResponse({
