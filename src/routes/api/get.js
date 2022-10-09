@@ -13,22 +13,27 @@ const successResponse = createSuccessResponse({
  */
 module.exports = async (req, res) => {
   if (!req.params.id) {
-    successResponse.fragments = await Fragment.byUser(req.user);
-    res.status(200).json(successResponse);
+    await Fragment.byUser(req.user)
+      .then((data) => {
+        successResponse.fragments = data;
+        res.status(200).json(successResponse);
+      })
+      .catch((err) => {
+        logger.error('Something went wrong: ', err);
+      });
   } else {
-    try {
-      let fragment = await Fragment.byId(req.user, req.params.id);
-      res
-        .status(200)
-        .set('Created', fragment.created)
-        .set('Updated', fragment.updated)
-        .set('Content-Length', fragment.size)
-        .set('Content-Type', fragment.type)
-        .send(await fragment.getData());
-    } catch (err) {
-      logger.error('Something went wrong: ', err);
-    }
+    await Fragment.byId(req.user, req.params.id)
+      .then(async (fragment) => {
+        res
+          .status(200)
+          .set('Created', fragment.created)
+          .set('Updated', fragment.updated)
+          .set('Content-Length', fragment.size)
+          .set('Content-Type', fragment.type)
+          .send(await fragment.getData());
+      })
+      .catch((err) => {
+        logger.error('Something went wrong: ', err);
+      });
   }
 };
-
-//.toString()
