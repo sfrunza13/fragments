@@ -2,6 +2,7 @@
 
 const { createSuccessResponse } = require('../../response');
 const { Fragment } = require('../../model/fragment');
+const logger = require('../../logger');
 
 const successResponse = createSuccessResponse({
   fragments: [],
@@ -15,14 +16,18 @@ module.exports = async (req, res) => {
     successResponse.fragments = await Fragment.byUser(req.user);
     res.status(200).json(successResponse);
   } else {
-    let fragment = await Fragment.byId(req.user, req.params.id);
-    res
-      .status(200)
-      .set('Created', fragment.created)
-      .set('Updated', fragment.updated)
-      .set('Content-Length', fragment.size)
-      .set('Content-Type', fragment.type)
-      .send(await fragment.getData());
+    try {
+      let fragment = await Fragment.byId(req.user, req.params.id);
+      res
+        .status(200)
+        .set('Created', fragment.created)
+        .set('Updated', fragment.updated)
+        .set('Content-Length', fragment.size)
+        .set('Content-Type', fragment.type)
+        .send(await fragment.getData());
+    } catch (err) {
+      logger.error('Something went wrong: ', err);
+    }
   }
 };
 
