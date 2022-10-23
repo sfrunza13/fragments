@@ -30,16 +30,16 @@ describe('GET /v1/fragments', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
-    expect(res.body.Fragment).toHaveProperty('ownerId');
-    expect(res.body.Fragment).toHaveProperty('id');
-    expect(res.body.Fragment.type).toBe('text/plain');
-    expect(res.body.Fragment.size).toBe(13);
-    expect(res.body.Fragment).toHaveProperty('created');
-    expect(res.body.Fragment).toHaveProperty('updated');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/plain');
+    expect(res.body.fragment.size).toBe(13);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
     expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
 
     const res2 = await request(app)
-      .get('/v1/fragments/' + res.body.Fragment.id)
+      .get('/v1/fragments/' + res.body.fragment.id)
       .auth('user1@email.com', 'password1');
 
     expect(res2.statusCode).toBe(200);
@@ -58,12 +58,12 @@ describe('GET /v1/fragments', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
-    expect(res.body.Fragment).toHaveProperty('ownerId');
-    expect(res.body.Fragment).toHaveProperty('id');
-    expect(res.body.Fragment.type).toBe('text/plain');
-    expect(res.body.Fragment.size).toBe(23);
-    expect(res.body.Fragment).toHaveProperty('created');
-    expect(res.body.Fragment).toHaveProperty('updated');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/plain');
+    expect(res.body.fragment.size).toBe(23);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
     expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
 
     const res2 = await request(app).get('/v1/fragments').auth('user1@email.com', 'password1');
@@ -72,5 +72,30 @@ describe('GET /v1/fragments', () => {
     expect(res2.body.status).toBe('ok');
     expect(Array.isArray(res2.body.fragments)).toBe(true);
     expect(res2.body.fragments.length).toStrictEqual(2);
+  });
+
+  test('authenticated users post and get with id to info', async () => {
+    let mystring = 'Testing Stuff';
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send(mystring)
+      .set('Content-Type', 'text/plain')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/plain');
+    expect(res.body.fragment.size).toBe(13);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
+    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+
+    const res2 = await request(app)
+      .get('/v1/fragments/' + res.body.fragment.id + '/info')
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(200);
+    expect(res2.body).toEqual(res.body.fragment);
   });
 });

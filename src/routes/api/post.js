@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
   await fragment.setData(req.body);
 
   const successResponse = createSuccessResponse({
-    Fragment: fragment,
+    fragment: fragment,
   });
 
   res.status(201).setHeader('Location', process.env.API_URL).json(successResponse);

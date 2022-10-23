@@ -30,12 +30,12 @@ describe('POST /v1/fragments', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
-    expect(res.body.Fragment).toHaveProperty('ownerId');
-    expect(res.body.Fragment).toHaveProperty('id');
-    expect(res.body.Fragment.type).toBe('text/plain');
-    expect(res.body.Fragment.size).toBe(13);
-    expect(res.body.Fragment).toHaveProperty('created');
-    expect(res.body.Fragment).toHaveProperty('updated');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/plain');
+    expect(res.body.fragment.size).toBe(13);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
   });
 
   test('authenticated users post and get a response of some sort but buffer', async () => {
@@ -47,12 +47,12 @@ describe('POST /v1/fragments', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
-    expect(res.body.Fragment).toHaveProperty('ownerId');
-    expect(res.body.Fragment).toHaveProperty('id');
-    expect(res.body.Fragment.type).toBe('text/plain');
-    expect(res.body.Fragment.size).toBe(3);
-    expect(res.body.Fragment).toHaveProperty('created');
-    expect(res.body.Fragment).toHaveProperty('updated');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/plain');
+    expect(res.body.fragment.size).toBe(3);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
   });
 
   test('authenticated users post and get a response of some sort but nothing', async () => {
@@ -64,11 +64,11 @@ describe('POST /v1/fragments', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
-    expect(res.body.Fragment).toHaveProperty('ownerId');
-    expect(res.body.Fragment).toHaveProperty('id');
-    expect(res.body.Fragment.type).toBe('text/plain');
-    expect(res.body.Fragment.size).toBe(0);
-    expect(res.body.Fragment).toHaveProperty('created');
-    expect(res.body.Fragment).toHaveProperty('updated');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/plain');
+    expect(res.body.fragment.size).toBe(0);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
   });
 });

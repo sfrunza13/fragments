@@ -106,7 +106,7 @@ class Fragment {
     }
     //this is incorrect
     this.size = data.length;
-    this.updated = new Date();
+    this.save();
     return writeFragmentData(this.ownerId, this.id, data);
   }
 
@@ -125,11 +125,10 @@ class Fragment {
    * @returns {boolean} true if fragment's type is text/*
    */
   get isText() {
-    let retVal = false;
     if (this.type.substring(0, 4) == 'text') {
-      retVal = true;
+      return true;
     }
-    return retVal;
+    return false;
   }
 
   /**
