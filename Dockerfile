@@ -40,7 +40,7 @@ COPY --chown=node:node ./src ./src
 COPY --chown=node:node ./tests/.htpasswd ./tests/.htpasswd
 
 # Start the container by running our server
-CMD npm start
+CMD ["npm start"]
 
 # We run our service on port 8080
 EXPOSE 8080
