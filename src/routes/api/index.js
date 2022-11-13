@@ -15,10 +15,10 @@ router.get('/fragments', require('./get'));
 // Other routes will go here later on...
 
 // Define our second get, which will be: GET /v1/fragements/:id
-router.get('/fragments/:id', require('./get'));
+router.get('/fragments/:id', require('./getById'));
 
 // Define new get info for getting metadata associated with fragment
-router.get('/fragments/:id/info', require('./get'));
+router.get('/fragments/:id/info', require('./getInfoById'));
 
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>

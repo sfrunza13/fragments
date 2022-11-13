@@ -64,7 +64,7 @@ class Fragment {
    */
   static async byId(ownerId, id) {
     const result = await readFragment(ownerId, id);
-    if (result == undefined) throw Error(id + ' returns undefined');
+    if (result === undefined) throw Error(id + ' returns undefined');
     return result;
   }
 
@@ -125,7 +125,7 @@ class Fragment {
    * @returns {boolean} true if fragment's type is text/*
    */
   get isText() {
-    if (this.type.substring(0, 4) == 'text') {
+    if (this.mimeType.substring(0, 4) == 'text') {
       return true;
     }
     return false;
@@ -136,7 +136,24 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    return ['text/plain'];
+    let formats = [];
+    switch (this.mimeType) {
+      case 'text/plain':
+        formats = ['text/plain'];
+        break;
+      case 'text/markdown':
+        formats = ['text/plain', 'text/html', 'text/markdown'];
+        break;
+      case 'text/html':
+        formats = ['text/plain', 'text/html'];
+        break;
+      case 'application/json':
+        formats = ['text/plain', 'application/json'];
+        break;
+      default:
+        break;
+    }
+    return formats;
   }
 
   /**
@@ -145,7 +162,16 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    return value.substring(0, 4) == 'text';
+    let supportedTypes = ['text/plain', 'text/markdown', 'text/html', 'application/json'];
+    let pos = value.indexOf(';');
+    let baseType = '';
+
+    if (pos == -1) {
+      baseType = value;
+    } else {
+      baseType = value.substring(0, pos);
+    }
+    return supportedTypes.includes(baseType);
   }
 }
 

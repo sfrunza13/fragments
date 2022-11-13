@@ -1,5 +1,6 @@
 const { Fragment } = require('../../model/fragment');
-const { createSuccessResponse } = require('../../response');
+const { createSuccessResponse, createErrorResponse } = require('../../response');
+const logger = require('../../logger');
 
 /**
  * Write fragment from request body including id, created, type, size, ownerID
@@ -7,26 +8,48 @@ const { createSuccessResponse } = require('../../response');
  * setData and save (I don't know if order matters, we have email and id here)
  */
 module.exports = async (req, res) => {
-  // console.log('This is my request header: ', req.headers);
+  //Check if it is valid JSON if Content-Type JSON
+  const isJson = (str) => {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      logger.error('JSON formatting wrong: %s', e);
+      let errorResponse = createErrorResponse(500, e.message);
+      logger.error(errorResponse);
+      res.status(500).setHeader('Location', process.env.API_URL).json(errorResponse);
+      return false;
+    }
 
-  // console.log('This is my request body: ', req.body);
+    return true;
+  };
 
-  // console.log('testing real quick: ', req.get('content-type'));
+  const itsGood = async () => {
+    try {
+      let fragment = new Fragment({
+        ownerId: req.user,
+        type: req.get('content-type'),
+        size: +req.get('content-length'),
+      });
 
-  // console.log(req.user);
+      await fragment.save();
+      await fragment.setData(req.body);
 
-  let fragment = new Fragment({
-    ownerId: req.user,
-    type: req.get('content-type'),
-    size: +req.get('content-length'),
-  });
+      const successResponse = createSuccessResponse({
+        fragment: fragment,
+      });
 
-  await fragment.save();
-  await fragment.setData(req.body);
+      res.status(201).setHeader('Location', process.env.API_URL).json(successResponse);
+    } catch (err) {
+      logger.error('Server error ', { error: err });
+      res.status(500).setHeader('Location', process.env.API_URL).json(err);
+    }
+  };
 
-  const successResponse = createSuccessResponse({
-    fragment: fragment,
-  });
-
-  res.status(201).setHeader('Location', process.env.API_URL).json(successResponse);
+  if (req.get('content-type') === 'application/json') {
+    if (isJson(req.body)) {
+      itsGood();
+    }
+  } else {
+    itsGood();
+  }
 };

@@ -5,12 +5,14 @@ const wait = async (ms = 1000) => new Promise((resolve) => setTimeout(resolve, m
 
 const validTypes = [
   `text/plain`,
+  `application/json`,
+  `text/markdown`,
+  `text/html`,
   /*
    Currently, only text/plain is supported. Others will be added later.
 
-  `text/markdown`,
-  `text/html`,
-  `application/json`,
+  
+  
   `image/png`,
   `image/jpeg`,
   `image/webp`,

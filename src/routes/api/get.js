@@ -12,34 +12,18 @@ const successResponse = createSuccessResponse({
  * Get a list of fragments for the current user
  */
 module.exports = async (req, res) => {
-  if (req.path.includes('info')) {
-    await Fragment.byId(req.user, req.params.id).then((fragment) => {
-      res.status(200).send(fragment);
-    });
+  if (req.query.expand == 1) {
+    successResponse.fragments = await Fragment.byUser(req.user, true);
+    res.status(200).json(successResponse);
   } else {
-    if (!req.params.id) {
-      await Fragment.byUser(req.user)
-        .then((data) => {
-          successResponse.fragments = data;
-          res.status(200).json(successResponse);
-        })
-        .catch((err) => {
-          logger.error('Something went wrong: ', err);
-        });
-    } else {
-      await Fragment.byId(req.user, req.params.id)
-        .then(async (fragment) => {
-          res
-            .status(200)
-            .set('Created', fragment.created)
-            .set('Updated', fragment.updated)
-            .set('Content-Length', fragment.size)
-            .set('Content-Type', fragment.type)
-            .send(await fragment.getData());
-        })
-        .catch((err) => {
-          logger.error('Something went wrong: ', err);
-        });
-    }
+    await Fragment.byUser(req.user)
+      .then((data) => {
+        successResponse.fragments = data;
+        res.status(200).json(successResponse);
+      })
+      .catch((err) => {
+        logger.error('Something went wrong: ', { error: err });
+        res.status(500).send();
+      });
   }
 };

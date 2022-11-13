@@ -71,4 +71,48 @@ describe('POST /v1/fragments', () => {
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
   });
+
+  test('authenticated users post and get a response of some sort but JSON', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send({ Valid: 'JSON' })
+      .set('Content-Type', 'application/json')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('application/json');
+    expect(res.body.fragment.size).toBe(16);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
+  });
+
+  test('authenticated users post and get a response of some sort but empty JSON', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send()
+      .set('Content-Type', 'application/json')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(500);
+  });
+
+  test('authenticated users post and get a response of some sort but empty HTML', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send()
+      .set('Content-Type', 'text/html')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/html');
+    expect(res.body.fragment.size).toBe(0);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
+  });
 });
