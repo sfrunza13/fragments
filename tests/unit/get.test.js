@@ -40,7 +40,9 @@ describe('GET /v1/fragments', () => {
     expect(res.body.fragment.size).toBe(12);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app).get('/v1/fragments').auth('user1@email.com', 'password1');
     expect(res2.statusCode).toBe(200);
@@ -68,7 +70,9 @@ describe('GET v1/fragments/?expand=1', () => {
     expect(res.body.fragment.size).toBe(23);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments?expand=1')
@@ -98,7 +102,9 @@ describe('GET v1/fragments/:id', () => {
     expect(res.body.fragment.size).toBe(13);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/' + res.body.fragment.id)
@@ -106,7 +112,7 @@ describe('GET v1/fragments/:id', () => {
 
     expect(res2.statusCode).toBe(200);
     expect(res2.text).toStrictEqual(mystring);
-    expect(res2.get('Content-Type')).toBe('text/plain; charset=utf-8');
+    expect(res2.get('Content-Type')).toBe('text/plain');
     expect(res2.get('Content-Length')).toBe('13');
   });
 
@@ -126,7 +132,9 @@ describe('GET v1/fragments/:id', () => {
     expect(res.body.fragment.size).toBe(13);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/9926be67-fae9-433d-86ef-7caa333af177a')
@@ -151,7 +159,9 @@ describe('GET v1/fragments/:id', () => {
     expect(res.body.fragment.size).toBe(15);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/' + res.body.fragment.id + '.html')
@@ -179,7 +189,9 @@ describe('GET v1/fragments/:id', () => {
     expect(res.body.fragment.size).toBe(15);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/' + res.body.fragment.id + '.json')
@@ -204,7 +216,9 @@ describe('GET v1/fragments/:id', () => {
     expect(res.body.fragment.size).toBe(15);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/' + res.body.fragment.id + '.random')
@@ -229,7 +243,9 @@ describe('GET v1/fragments/:id', () => {
     expect(res.body.fragment.size).toBe(15);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/' + res.body.fragment.id + '.txt')
@@ -257,7 +273,9 @@ describe('GET v1/fragments/:id/info', () => {
     expect(res.body.fragment.size).toBe(13);
     expect(res.body.fragment).toHaveProperty('created');
     expect(res.body.fragment).toHaveProperty('updated');
-    expect(res.get('location')).toBe('http://localhost:8080/v1/fragments');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
 
     const res2 = await request(app)
       .get('/v1/fragments/' + res.body.fragment.id + '/info')
