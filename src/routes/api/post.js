@@ -38,14 +38,21 @@ module.exports = async (req, res) => {
         fragment: fragment,
       });
 
-      res.status(201).setHeader('Location', process.env.API_URL).json(successResponse);
+      res
+        .status(201)
+        .setHeader('Location', process.env.API_URL + '/' + fragment.id)
+        .json(successResponse);
     } catch (err) {
       logger.error('Server error ', { error: err });
       res.status(500).setHeader('Location', process.env.API_URL).json(err);
     }
   };
 
-  if (req.get('content-type') === 'application/json') {
+  //Check if content type is supported
+  if (!Fragment.isSupportedType(req.get('content-type'))) {
+    let errorResponse = createErrorResponse(415, 'Content Type not supported');
+    res.status(415).json(errorResponse);
+  } else if (req.get('content-type') === 'application/json') {
     if (isJson(req.body)) {
       itsGood();
     }

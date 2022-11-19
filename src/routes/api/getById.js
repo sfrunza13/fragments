@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         } else {
           converted = await fragment.getData();
         }
-        res.status(200).set('Content-Type', typeToConvert).send(converted);
+        res.status(200).setHeader('Content-Type', typeToConvert).send(converted);
       } else {
         logger.error('Not a convertable type for %s', fragment.type);
         res.status(500).send();
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
     .then(async (fragment) => {
       res
         .status(200)
-        .set('Content-Type', fragment.type)
+        .setHeader('Content-Type', fragment.type)
         .send(await fragment.getData());
     })
     .catch((err) => {
