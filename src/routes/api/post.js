@@ -44,7 +44,11 @@ module.exports = async (req, res) => {
         .json(successResponse);
     } catch (err) {
       logger.error('Server error ', { error: err });
-      res.status(500).setHeader('Location', process.env.API_URL).json(err);
+      res
+        //might be reaching here
+        .status(500)
+        .setHeader('Location', process.env.API_URL)
+        .json(err);
     }
   };
 

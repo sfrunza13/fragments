@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
     })
     .catch((err) => {
       logger.error('Something went wrong: ', { error: err });
-      res.status(500).send();
+      res.status(404).send();
     });
 };
 
