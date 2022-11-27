@@ -140,7 +140,7 @@ describe('GET v1/fragments/:id', () => {
       .get('/v1/fragments/9926be67-fae9-433d-86ef-7caa333af177a')
       .auth('user1@email.com', 'password1');
 
-    expect(res2.statusCode).toBe(500);
+    expect(res2.statusCode).toBe(404);
   });
 
   test('authenticated users post and get converting markdown to HTML', async () => {
