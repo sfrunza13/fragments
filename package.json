@@ -1,7 +1,7 @@
 {
   "name": "fragments",
   "private": "true",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Initial Repository for the Cloud Computing Course",
   "main": "index.js",
   "scripts": {
