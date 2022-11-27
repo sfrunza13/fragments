@@ -86,9 +86,9 @@ jobs:
             API_URL=http://ec2co-ecsel-b4y4fpel8tc2-940561499.us-east-1.elb.amazonaws.com:8080/v1/fragments
             AWS_S3_BUCKET_NAME=sfrunza-fragments
       - name: Deploy Amazon ECS task definition
-          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-          with:
-            task-definition: ${{ steps.update-task-def.outputs.task-definition }}
-            cluster: fragments-cluster
-            service: fragments-service
-            wait-for-service-stability: true
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.update-task-def.outputs.task-definition }}
+          cluster: fragments-cluster
+          service: fragments-service
+          wait-for-service-stability: true
