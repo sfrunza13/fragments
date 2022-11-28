@@ -85,9 +85,6 @@ jobs:
             NODE_ENV=production
             API_URL=http://ec2co-ecsel-b4y4fpel8tc2-940561499.us-east-1.elb.amazonaws.com:8080/v1/fragments
             AWS_S3_BUCKET_NAME=sfrunza-fragments
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
