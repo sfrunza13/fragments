@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
         .setHeader('Location', process.env.API_URL + '/' + fragment.id)
         .json(successResponse);
     } catch (err) {
-      logger.error('Server error ', { error: err });
+      logger.error('Server error ' + err);
       res
         //might be reaching here
         .status(500)
