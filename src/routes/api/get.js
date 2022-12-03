@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
         res.status(200).json(successResponse);
       })
       .catch((err) => {
-        logger.error('Something went wrong: ', { error: err });
+        logger.error('Something went wrong in get: %s', err);
         res.status(500).send();
       });
   }

@@ -9,12 +9,12 @@ const { createSuccessResponse } = require('../../response');
  */
 module.exports = async (req, res) => {
   await Fragment.byId(req.user, req.params.id)
-    .then(async (fragment) => {
+    .then((fragment) => {
       let successResponse = createSuccessResponse({ fragment: fragment });
       res.status(200).set('Content-Type', fragment.type).json(successResponse);
     })
     .catch((err) => {
-      logger.error('Something went wrong: ', { error: err });
+      logger.error('Something went wrong in getInfoByID: %s', err);
       res.status(500).send();
     });
 };

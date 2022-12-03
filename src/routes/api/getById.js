@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     let convertArray = req.params.id.split('.');
     let typeToConvert = dealWithExtension(convertArray[1]);
     logger.info('This is the extension: %s', typeToConvert);
-    await Fragment.byId(req.user, convertArray[0]).then(async (fragment) => {
+    Fragment.byId(req.user, convertArray[0]).then(async (fragment) => {
       //fragment.formats is not a function
       if (fragment.formats.includes(typeToConvert)) {
         let converted;
@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
     });
   }
 
-  await Fragment.byId(req.user, req.params.id)
+  Fragment.byId(req.user, req.params.id)
     .then(async (fragment) => {
       res
         .status(200)
@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
         .send(await fragment.getData());
     })
     .catch((err) => {
-      logger.error('Something went wrong: ', { error: err });
+      logger.error('Something went wrong in getByID: %s', err);
       res.status(404).send();
     });
 };

@@ -65,7 +65,10 @@ class Fragment {
   static async byId(ownerId, id) {
     const result = await readFragment(ownerId, id);
     if (result === undefined) throw Error(id + ' returns undefined');
-    return result;
+
+    const fragment = new Fragment(result);
+
+    return fragment;
   }
 
   /**

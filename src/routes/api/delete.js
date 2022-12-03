@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
       res.status(200).send();
     })
     .catch((err) => {
-      logger.error('Something went wrong: ', { error: err });
+      logger.error('Something went wrong in delete: %s', err);
       res.status(500).send();
     });
 };
