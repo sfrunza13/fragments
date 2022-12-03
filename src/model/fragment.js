@@ -31,13 +31,13 @@ class Fragment {
     if (created) {
       this.created = created;
     } else {
-      this.created = new Date();
+      this.created = new Date().toString();
     }
 
     if (updated) {
       this.updated = updated;
     } else {
-      this.updated = new Date();
+      this.updated = new Date().toString();
     }
 
     if (typeof size != 'number') throw Error('Size is not of Type Number');
@@ -86,7 +86,7 @@ class Fragment {
    * @returns Promise
    */
   save() {
-    this.updated = new Date();
+    this.updated = new Date().toString();
     return writeFragment(this);
   }
 

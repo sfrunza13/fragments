@@ -52,8 +52,8 @@ Content-Type: application/json; charset=utf-8
 [Asserts]
 jsonpath "$.fragment.id" == {{fragment1_id}}
 jsonpath "$.fragment.size" isInteger
-jsonpath "$.fragment.created" exists
-jsonpath "$.fragment.updated" exists
+jsonpath "$.fragment.created" isString
+jsonpath "$.fragment.updated" isString
 jsonpath "$.fragment.type" == "application/json"
 jsonpath "$.fragment.ownerId" isString
 
@@ -67,8 +67,8 @@ Content-Type: text/markdown; charset=utf-8
 [Asserts]
 jsonpath "$.fragment.id" == {{fragment2_id}}
 jsonpath "$.fragment.size" isInteger
-jsonpath "$.fragment.created" exists
-jsonpath "$.fragment.updated" exists
+jsonpath "$.fragment.created" isString
+jsonpath "$.fragment.updated" isString
 jsonpath "$.fragment.type" == "text/markdown"
 jsonpath "$.fragment.ownerId" isString
 
