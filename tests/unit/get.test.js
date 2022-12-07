@@ -197,7 +197,7 @@ describe('GET v1/fragments/:id', () => {
       .get('/v1/fragments/' + res.body.fragment.id + '.json')
       .auth('user1@email.com', 'password1');
 
-    expect(res2.statusCode).toBe(500);
+    expect(res2.statusCode).toBe(415);
   });
 
   test('authenticated users post and get converting markdown to unconvertable', async () => {
@@ -224,7 +224,7 @@ describe('GET v1/fragments/:id', () => {
       .get('/v1/fragments/' + res.body.fragment.id + '.random')
       .auth('user1@email.com', 'password1');
 
-    expect(res2.statusCode).toBe(500);
+    expect(res2.statusCode).toBe(415);
   });
 
   test('authenticated users post and get converting markdown to txt', async () => {
@@ -253,6 +253,33 @@ describe('GET v1/fragments/:id', () => {
 
     expect(res2.statusCode).toBe(200);
     expect(res2.text).toEqual(mystring);
+  });
+
+  test('authenticated users post and get converting markdown to txt with invalid ID', async () => {
+    let mystring = '# Testing Stuff';
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send(mystring)
+      .set('Content-Type', 'text/markdown')
+      .auth('user1@email.com', 'password1');
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment).toHaveProperty('ownerId');
+    expect(res.body.fragment).toHaveProperty('id');
+    expect(res.body.fragment.type).toBe('text/markdown');
+    expect(res.body.fragment.size).toBe(15);
+    expect(res.body.fragment).toHaveProperty('created');
+    expect(res.body.fragment).toHaveProperty('updated');
+    expect(res.get('location')).toBe(
+      'http://localhost:8080/v1/fragments' + '/' + res.body.fragment.id
+    );
+
+    const res2 = await request(app)
+      .get('/v1/fragments/' + 1234545 + '.txt')
+      .auth('user1@email.com', 'password1');
+
+    expect(res2.statusCode).toBe(404);
   });
 });
 

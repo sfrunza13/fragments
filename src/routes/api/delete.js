@@ -5,10 +5,10 @@ const logger = require('../../logger');
 /**
  * Delete fragment by ID
  */
-module.exports = async (req, res) => {
-  await Fragment.delete(req.user, req.params.id)
+module.exports = (req, res) => {
+  Fragment.delete(req.user, req.params.id)
     .then(() => {
-      res.status(200).send();
+      res.status(200).send('Successful Deletion!');
     })
     .catch((err) => {
       logger.error('Something went wrong in delete: %s', err);

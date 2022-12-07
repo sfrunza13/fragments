@@ -254,5 +254,44 @@ describe('Fragment class', () => {
       await Fragment.delete('1234', fragment.id);
       expect(() => Fragment.byId('1234', fragment.id)).rejects.toThrow();
     });
+
+    test('a fragment error in image conversion can be caught', () => {
+      const fragment = new Fragment({ ownerId: '1234', type: 'image/png', size: 0 });
+      expect(async () => await fragment.conversionLogic('image/jpeg')).rejects.toThrow();
+    });
+
+    test('a fragment can be converted to its own type', async () => {
+      const fragment = new Fragment({ ownerId: '1234', type: 'text/plain', size: 0 });
+
+      fragment.setData(Buffer.from('plain text'));
+
+      let result = await fragment.conversionLogic('text/plain');
+
+      let data = await fragment.getData();
+
+      expect(result).toEqual(data);
+    });
+  });
+  describe('deal with extension', () => {
+    test('getting extensions from deal with extension', () => {
+      let result = Fragment.dealWithExtension('png');
+      expect(result).toBe('image/png');
+      let result1 = Fragment.dealWithExtension('jpeg');
+      expect(result1).toBe('image/jpeg');
+      let result2 = Fragment.dealWithExtension('jpg');
+      expect(result2).toBe('image/jpeg');
+      let result3 = Fragment.dealWithExtension('webp');
+      expect(result3).toBe('image/webp');
+      let result4 = Fragment.dealWithExtension('gif');
+      expect(result4).toBe('image/gif');
+      let result5 = Fragment.dealWithExtension('txt');
+      expect(result5).toBe('text/plain');
+      let result6 = Fragment.dealWithExtension('md');
+      expect(result6).toBe('text/markdown');
+      let result7 = Fragment.dealWithExtension('html');
+      expect(result7).toBe('text/html');
+      let result8 = Fragment.dealWithExtension('json');
+      expect(result8).toBe('application/json');
+    });
   });
 });

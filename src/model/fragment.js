@@ -3,6 +3,9 @@
 const { randomUUID } = require('crypto');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
+const md = require('markdown-it')();
+const sharp = require('sharp');
+const logger = require('../logger');
 
 // Functions for working with fragment metadata/data using our DB
 const {
@@ -153,6 +156,14 @@ class Fragment {
       case 'application/json':
         formats = ['text/plain', 'application/json'];
         break;
+      case 'image/png':
+        formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+      case 'image/jpeg':
+        formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+      case 'image/webp':
+        formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+      case 'image/gif':
+        formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
       default:
         break;
     }
@@ -165,7 +176,16 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    let supportedTypes = ['text/plain', 'text/markdown', 'text/html', 'application/json'];
+    let supportedTypes = [
+      'text/plain',
+      'text/markdown',
+      'text/html',
+      'application/json',
+      'image/png',
+      'image/jpeg',
+      'image/webp',
+      'image/gif',
+    ];
     let pos = value.indexOf(';');
     let baseType = '';
 
@@ -175,6 +195,69 @@ class Fragment {
       baseType = value.substring(0, pos);
     }
     return supportedTypes.includes(baseType);
+  }
+
+  static dealWithExtension(ext) {
+    //Take extension and spit out content/subcontent
+    let type;
+    switch (ext) {
+      case 'txt':
+        type = 'text/plain';
+        break;
+      case 'md':
+        type = 'text/markdown';
+        break;
+      case 'html':
+        type = 'text/html';
+        break;
+      case 'json':
+        type = 'application/json';
+        break;
+      case 'png':
+        type = 'image/png';
+        break;
+      case 'jpg':
+        type = 'image/jpeg';
+        break;
+      case 'jpeg':
+        type = 'image/jpeg';
+        break;
+      case 'webp':
+        type = 'image/webp';
+        break;
+      case 'gif':
+        type = 'image/gif';
+      default:
+        break;
+    }
+    return type;
+  }
+
+  async conversionLogic(typeToConvert) {
+    //fragment.formats is not a function
+    if (this.formats.includes(typeToConvert)) {
+      let converted;
+      if (typeToConvert === 'text/html') {
+        converted = md.render((await this.getData()).toString());
+      } else if (typeToConvert.includes('image/')) {
+        let typeArr = typeToConvert.split('/');
+        logger.info('EXTENSIONS: %s', typeArr[1]);
+        let data = await this.getData();
+
+        try {
+          converted = await sharp(data).toFormat(typeArr[1]).toBuffer();
+        } catch (err) {
+          logger.error('ERROR CONVERTING WITH SHARP: %s', err);
+          throw Error('Error converting image with Sharp');
+        }
+      } else {
+        converted = await this.getData();
+      }
+      return converted;
+    } else {
+      logger.error('Not a convertable type for %s', this.type);
+      throw Error('It seems conversion does not work between these types');
+    }
   }
 }
 

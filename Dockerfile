@@ -26,6 +26,9 @@ COPY package*.json /app/
 # Install node dependencies defined in package-lock.json
 RUN npm ci --only=production
 
+# Lets see if this will make sharp actually work
+RUN npm install --platform=linuxmusl --arch=x64 sharp@0.30.7
+
 #Stage 2 run start
 FROM node:16.18-alpine@sha256:2175727cef5cad4020cb77c8c101d56ed41d44fbe9b1157c54f820e3d345eab1 AS run
 
@@ -39,8 +42,11 @@ COPY --chown=node:node ./src ./src
 # Copy our HTPASSWD file
 COPY --chown=node:node ./tests/.htpasswd ./tests/.htpasswd
 
+
+
+
 # Start the container by running our server
-CMD ["npm", "start"]
+CMD ["node", "src/index.js"]
 
 # We run our service on port 8080
 EXPOSE 8080
