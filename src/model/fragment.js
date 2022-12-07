@@ -158,12 +158,16 @@ class Fragment {
         break;
       case 'image/png':
         formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+        break;
       case 'image/jpeg':
         formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+        break;
       case 'image/webp':
         formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+        break;
       case 'image/gif':
         formats = ['image/jpeg', 'image/webp', 'image/gif', 'image/png'];
+        break;
       default:
         break;
     }
@@ -227,6 +231,7 @@ class Fragment {
         break;
       case 'gif':
         type = 'image/gif';
+        break;
       default:
         break;
     }

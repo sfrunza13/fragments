@@ -294,4 +294,29 @@ describe('Fragment class', () => {
       expect(result8).toBe('application/json');
     });
   });
+
+  describe('getText is false', () => {
+    const fragment = new Fragment({ ownerId: '1234', type: 'application/json', size: 0 });
+    expect(fragment.isText).toBe(false);
+  });
+
+  describe('formats tests', () => {
+    const fragment = new Fragment({ ownerId: '1234', type: 'application/json', size: 0 });
+    const fragment1 = new Fragment({ ownerId: '1234', type: 'text/plain', size: 0 });
+    const fragment2 = new Fragment({ ownerId: '1234', type: 'text/markdown', size: 0 });
+    const fragment3 = new Fragment({ ownerId: '1234', type: 'text/html', size: 0 });
+    const fragment4 = new Fragment({ ownerId: '1234', type: 'image/png', size: 0 });
+    const fragment5 = new Fragment({ ownerId: '1234', type: 'image/jpeg', size: 0 });
+    const fragment6 = new Fragment({ ownerId: '1234', type: 'image/webp', size: 0 });
+    const fragment7 = new Fragment({ ownerId: '1234', type: 'image/gif', size: 0 });
+
+    expect(fragment.formats).toEqual(['text/plain', 'application/json']);
+    expect(fragment1.formats).toEqual(['text/plain']);
+    expect(fragment2.formats).toEqual(['text/plain', 'text/html', 'text/markdown']);
+    expect(fragment3.formats).toEqual(['text/plain', 'text/html']);
+    expect(fragment4.formats).toEqual(['image/jpeg', 'image/webp', 'image/gif', 'image/png']);
+    expect(fragment5.formats).toEqual(['image/jpeg', 'image/webp', 'image/gif', 'image/png']);
+    expect(fragment6.formats).toEqual(['image/jpeg', 'image/webp', 'image/gif', 'image/png']);
+    expect(fragment7.formats).toEqual(['image/jpeg', 'image/webp', 'image/gif', 'image/png']);
+  });
 });
