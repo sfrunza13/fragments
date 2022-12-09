@@ -42,6 +42,7 @@ jobs:
         run: ./scripts/local-aws-setup.sh
       - name: Run Hurl Tests
         run: npm run test:integration
+
   # NOTE: this assumes our CI jobs have already passed previously
   # (i.e., that we don't tag a commit manually until we know a build is working)
   aws:
