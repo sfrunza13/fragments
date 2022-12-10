@@ -46,6 +46,7 @@ jobs:
   # (i.e., that we don't tag a commit manually until we know a build is working)
   aws:
     name: AWS
+    needs: [integration-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
