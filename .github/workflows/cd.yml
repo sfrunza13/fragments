@@ -20,7 +20,7 @@ on:
       - 'v**'
 
 jobs:
-  # NOTE: this assumes our CI jobs have already passed previously
+  # NOTE: this assumes our CI jobs have already passed previously f
   # (i.e., that we don't tag a commit manually until we know a build is working)
   aws:
     name: AWS
